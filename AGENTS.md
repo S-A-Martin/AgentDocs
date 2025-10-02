@@ -26,7 +26,7 @@
 - Add newly discovered insights to Agent Notes using the prescribed format.
 
 ## Quality & Validation
-- Define contracts, edge cases, and test strategy for substantial work; validate via builds, linters, and tests after meaningful edits.
+- Define contracts, edge cases, and test strategy for substantial work; validate via asking the user to build or run tests and provide you with details of the new behaviour, do this after meaningful edits.
 - Report PASS/FAIL status for executed checks and address any failures immediately or explain blockers.
 
 ## Safety & Security
