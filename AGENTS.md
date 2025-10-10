@@ -12,7 +12,8 @@
 ## Change Discipline
 - Modify only task-relevant files; retain existing structure, logic, formatting, and whitespace elsewhere.
 - Preserve all existing comments unless they must change for accuracy, and avoid deleting code unless explicitly required.
-- Keep diffs minimal, and never introduce placeholder comments or incomplete blocks.
+- Keep diffs to the absolute minimal, the tiniest and simplest code change to fulfill the requirements and never introduce placeholder comments or incomplete blocks.
+- Unneccesary code bloat, or overcomplicating code that could be expressed in a simple, minimal way will not be tolerated.
 - Comment any unavoidable disruption you introduce and resolve it before finishing.
 - Avoid git staging/commit/push; all other git commands are available.
 
