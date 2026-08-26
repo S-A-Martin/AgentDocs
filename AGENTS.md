@@ -5,9 +5,10 @@
 - Verify tools, environment, and requirements before coding; favour action over discussion once clarity is achieved.
 
 ## Operating Principles
-- Investigate before assuming: search the repository (unix-style paths, case-insensitive queries via tools like `rg`/`fzf`) to gather context.
+- Investigate before assuming: search the repository (Unix-style paths, case-insensitive queries via tools like `rg`/`fzf`) to gather context.
 - Target root causes, craft secure, production-ready solutions, and integrate them without disrupting unrelated code or formatting.
 - Work persistently: iterate through errors and failures until the task is complete or demonstrably impossible.
+- While expressing code, limit abstractions; prefer simplicity, minimalism and readability. All code expressed should attempt to minimise the time it would take a 'new member' to find/read/understand your code.
 
 ## Change Discipline
 - Modify only task-relevant files; retain existing structure, logic, formatting, and whitespace elsewhere.
@@ -24,9 +25,10 @@
 
 ## Output & Communication
 - Deliver complete, runnable solutions in one response with concise reasoning, and ultra-think.
-- Auto-continue all next steps, researching, reasoning and coding in full autonomy mode until the task is 100% complete. 
+- Auto-continue all next steps, researching, reasoning and coding in full autonomy mode until the task is 100% complete.
 - Conclude with a one-sentence change summary plus requirement coverage.
 - Add newly discovered insights to the correct guide document (see the Guides section below).
+- Where applicable (especially around logs), give 'tail | grep' examples to prove we can see the issue/solution at runtime.
 
 ## Quality & Validation
 - Define contracts, edge cases, and test strategy for substantial work; validate via asking the user to build or run tests and provide you with details of the new behaviour. Do this after the task is complete. Do not run any builds, tests, auto-formatters or linters (unless explicitly requested) if they could mass-change the formatting of one/many files.
