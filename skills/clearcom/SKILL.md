@@ -1,5 +1,5 @@
 ---
-name: Clear-Com (CC) System and Component Guide
+name: clearcom
 description: Clear-Com product/system architecture and debugging guide covering EHX/CPUApp, IVCore/DPI/IVP, PlutoApp, Iris/VSeries, Ares/Mentrix/UserIO, Arcadia, LQ, HelixNet, virtual clients and MMID/CCM.
 ---
 # Clear-Com system guide
@@ -347,6 +347,91 @@ manageProcessWatchdog.sh -e
 ```
 
 This is not persistent across reboot; disabling the watchdog is a deliberate diagnostic action, not a fix.
+
+### Ares core-dump analysis with GDB
+
+Ares application core dumps are stored on the target in `/DATA/cores/`. Ares has no real-time clock and the system boots with the same system clock value, so a file's timestamp—and therefore `ls -t`'s idea of the newest file—does not reliably identify the most recent dump. Inspect candidate filenames and sizes, and correlate them with the failing application/build; do not select a dump by timestamp alone. Copy the selected dump to the analysis host, identify it there with `file`, and decompress it if it is a `.gz` file:
+
+```bash
+# On the target
+ls -l /DATA/cores/
+
+# On the analysis host, after copying the selected file
+file <CORE_DUMP>
+gzip -dk <CORE_DUMP>.gz       # only when the copied dump is compressed
+```
+
+Read the canonical procedure before loading the dump: `/home/scmbuild/work/cc-clearcom/LoadingCoreDumpsREADME.md`. It covers both BitBake release dumps and locally built DevEnv dumps. The debugger and executable must match the target architecture and the exact build that produced the core; using a different release executable can produce misleading symbols and stack traces.
+
+For the known Ares SDK, source the host SDK. This sets `$GDB`:
+
+```bash
+. /opt/clearcom/host-sdk/environment-setup-x86_64-clearcom-linux
+$GDB -q
+```
+
+The expected debugger is:
+
+```text
+/opt/clearcom/09.02.00.00_cc.3_armv7at2hf-neon/sysroots/x86_64-clearcomsdk-linux/usr/bin/arm-clearcom-linux-gnueabi/arm-clearcom-linux-gnueabi-gdb
+```
+
+#### BitBake release (`with-syms`/`withsyms`) dump
+
+Obtain the `with-syms` archive for the exact release, extract it into a sysroot directory, and use the matching application executable. The package is built during BitBake: it has the release rootfs plus retained application debug files in `/usr/bin/.debug` and debug versions of third-party libraries in `/usr/lib/.debug`.
+
+From the host shell, after copying/decompressing the core and extracting the archive:
+
+```bash
+mkdir withsyms_sysroot
+tar -xf <WITHSYMS_FILENAME>.tar.xz -C withsyms_sysroot
+. /opt/clearcom/host-sdk/environment-setup-x86_64-clearcom-linux
+$GDB -q
+```
+
+Run the following in GDB:
+
+```gdb
+set pagination off
+set sysroot withsyms_sysroot
+set solib-absolute-prefix withsyms_sysroot
+set debug-file-directory withsyms_sysroot/usr/lib:withsyms_sysroot/usr/lib/debug:withsyms_sysroot/usr/lib/.debug
+file withsyms_sysroot/usr/bin/<APPLICATION>
+core-file <CORE_DUMP>
+info sharedlibrary
+```
+
+`info sharedlibrary` should show that the shared libraries were found with symbols. If libraries or frames are unresolved, first check the release, executable, architecture and sysroot rather than treating the resulting backtrace as authoritative.
+
+#### Local DevEnv build dump
+
+For a locally built application, follow the temporary sysroot-mirror procedure in the canonical README. In summary, set `OVL=/tmp/withsyms_sysroot`, link the matching SDK target `lib`, `usr/lib` and `usr/src` directories into it, and copy the locally built application to `"$OVL/usr/bin/<APPLICATION>"`:
+
+```bash
+OVL=/tmp/withsyms_sysroot
+rm -rf "$OVL"
+mkdir -p "$OVL/usr/bin" "$OVL/usr"
+ln -s /PATH/TO/SDK_TARGET_SYSROOT/usr/lib "$OVL/usr/lib"
+ln -s /PATH/TO/SDK_TARGET_SYSROOT/lib "$OVL/lib"
+ln -s /PATH/TO/SDK_TARGET_SYSROOT/usr/src "$OVL/usr/src"
+cp /home/scmbuild/work/cc-clearcom/firmware/applications/<APPLICATION>/build/<APPLICATION> \
+   "$OVL/usr/bin/<APPLICATION>"
+```
+
+Source the SDK, launch `$GDB -q`, then use this GDB setup:
+
+```gdb
+set pagination off
+set sysroot /tmp/withsyms_sysroot
+set solib-absolute-prefix /tmp/withsyms_sysroot
+set solib-search-path /tmp/withsyms_sysroot/lib:/tmp/withsyms_sysroot/usr/lib
+set substitute-path /usr/src/debug /tmp/withsyms_sysroot/usr/src/debug
+file /tmp/withsyms_sysroot/usr/bin/<APPLICATION>
+core-file <CORE_DUMP>
+info sharedlibrary
+```
+
+After symbols are validated, useful first inspection commands are `thread apply all bt full`, `info registers` and `info sharedlibrary`. Keep the original compressed dump and record which target file, application binary, SDK and symbols package were used for the analysis.
 
 ### AOIP/Minuet board
 
