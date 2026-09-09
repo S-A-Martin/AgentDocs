@@ -26,3 +26,6 @@ These rules apply in every agent mode. An active agent may add stricter limits, 
 - Never build applications or tests unless explicitly asked to by the user
 - Never run tests unless explicitly asked to be the user
 
+## General Notes
+- prefer 'tail -F <logs> | grep -iE' formatting if suggesting a log file grep to the user. Do not suggest '--line-buffered'
+
