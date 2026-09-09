@@ -4,69 +4,75 @@
  
 ## Problem Summary
  
-[One short paragraph. N/A if unknown.]
+- **Current:** [Behaviour/conditions and evidence; label source-only inference.]
+- **Expected:** [Behaviour and requirement/contract reference; Unknown if unverified.]
+- **Scope:** [Relevant components and constraints.]
  
 ## System Overview
  
+[Relevant applications/components and their responsibilities.]
+
 Flow:
  
 ```text
-[ASCII: components and data movement for this topic only]
+[ASCII: components/stages; label arrows with data/state and transformations.]
 ```
  
 ### Key Interfaces
  
 - **A → B**
-  - Inputs:
-  - Outputs:
-  - Validation:
-  - Notes:
+  - Inputs: [Data/type, relevant fields/units/states.]
+  - Outputs: [Resulting data/state and transformations.]
+  - Validation: [Invariants, checks, invalid-input behaviour.]
+  - Notes: [Ownership/lifetime, timing/ordering, failure boundaries.]
  
-N/A if not yet known.
+Repeat for relevant interfaces.
  
 ## Relevant Files
  
 ### /absolute/path
-Purpose: one sentence.
+Purpose: [Responsibility and relevance.]
 Symbols:
-- `symbolName()` — why it matters
+- `exactSymbol` — [kind/role; relevant data/contract] — /absolute/path:line
  
-Only files for this topic, most relevant first. N/A if none.
+Cover necessary functions, types, fields, enums and messages; relevance first, not an edit sequence. Verify references in source.
  
 ## Things to Consider
  
-Newest first.
-- Durable finding, constraint, assumption, or risk.
+Relevance first.
+- [Invariant, constraint, assumption, risk or counterexample; label inferences.]
  
-Not a chat transcript. N/A if none.
+Not a transcript or action plan.
  
 ## Evidence
  
 **grep**
-- `command` — finding
+- [Observation or labelled inference] — path:line, symbol or bounded command.
  
 **logs**
-- source/command — finding
+- [Observation] — source/component and time window; relevant version/correlation ID.
  
 **tests**
-- command — result
+- [Inspected source / user-reported result / observed run] — reference/command, outcome and limits.
  
-N/A where unavailable.
+Keep claims concise; omit raw dumps.
  
 ## Open Questions
  
-1. [Still blocks understanding]
+1. [Genuine unresolved question; missing evidence and why it matters.]
  
-N/A if none.
+Teaching prompts belong in Mentor Tips, not here.
  
 ## Mentor Tips
  
-- First-principles insight / pitfall / expert mindset
-Max five. N/A if none.
+- [Task-specific insight or reflective question that helps the engineer derive their own conclusion.]
+Max five; no leading repair questions or assigned actions.
  
 <!--
-- Keep every heading; use N/A instead of deleting sections.
-- One topic per file: \~/tasks/TP######/<Topic>.md
-- Component-level overview only; durable knowledge only.
-- Body text: ASD-STE100.
+- Keep all structural headings, order and field labels. Repeat interface/file/symbol entries as needed.
+- Replace prompts with task content; omit this comment and template guidance from dashboards.
+- Unknown = missing facts; N/A = not applicable; None identified = empty list; Not run = unexecuted check.
+- One topic per file: \~/tasks/TP######/<Topic>.md for tracked work. The full path, not TP alone, identifies the topic.
+- Compact current context, not an answer key, transcript or action plan.
+- Body text: ASD-STE100; preserve identifiers verbatim.
 -->
