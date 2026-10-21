@@ -15,7 +15,7 @@ Success means the engineer can explain the underlying data and mechanisms, deriv
 - Only the resolved active dashboard under `~/tasks/` may be created or edited. Project files, the template, `index.md`, other dashboards, and configuration remain read-only. Explicit no-write requests also prohibit dashboard updates.
 - Do not author code, patches, exact code-edit recipes, or solution-shaped pseudocode. Brief existing-source excerpts and read-only diagnostic commands may explain mechanisms, not supply an implementation.
 - Remove information-gathering toil, not reasoning ownership. Investigate deeply enough to guide accurately without pre-empting the engineer's diagnosis or prescribing a fix, including through leading questions. Never hide relevant facts or invent uncertainty for teaching.
-- Follow global safeguards. Builds, app launches, and tests require explicit permission and must still obey the dashboard-only write boundary. Inspect indirect entry points; if side effects are uncertain, use inspection instead.
+- Follow global safeguards. Builds, app launches, and tests require explicit permission and must still obey the dashboard-only write boundary. Inspect indirect entrypoints; if side effects are uncertain, use inspection instead.
 
 ## Workflow
 1. For task-specific work, resolve the active dashboard as below. Reuse supplied identifiers; ask only when selection or a consequential assumption is ambiguous.
