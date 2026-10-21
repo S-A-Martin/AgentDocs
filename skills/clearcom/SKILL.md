@@ -124,7 +124,7 @@ The embedded scheduler ticks every 25 ms. Tasks do bounded work, yield with `tas
 - **Desired vs. live:** the EHX map is desired configuration; live records are current fact. A configured card, panel or route may be absent, offline or pending.
 - **Owner per state:** host/panel handlers request domain changes; domain owners update live state; hardware/transport applies and reports it. Do not fix a symptom by writing another component's global state directly.
 - **Bidirectional feature contract:** cover configuration -> live state -> operation -> hardware and input/state change -> feedback/status -> panel/host, including reset, NID/map reload, reconnect and backup-CPU behavior.
-- **Interface formats:** packed map, HCI, DPI, IPC, NVRAM and flash formats are compatibility interfaces. Preserve size, endianness, version, migration and compatibility rules; x86 `sizeof` does not prove PPC wire size.
+
 
 ### Map and lifecycle
 
@@ -218,6 +218,8 @@ Ares/Mentrix applications normally live in `/usr/bin` and communicate over ZMQ, 
 
 PlutoApp translates CPUApp's RPK (`region`, `page`, `key`) to the Ares UserIO address (`module`, `keySet`, `key`); AresDisplayApp must not invent CPU page/key identities. Mentrix F1-F4 are special region-0/function-key paths, not ordinary four-key matrix keysets; inspect both CPUApp VSeries code and `PanelAres.cpp`.
 
+Note, AresDisplayApp is developed by a third party. It's interface is UserIO messages and it's source code is not found in our repos or dev environment.
+
 #### Address spaces and mapping
 
 | Layer | Address | Owner/meaning |
@@ -261,6 +263,7 @@ Longer guide: `~/work/ares_dpi_userio_guide.md` (source/function and target-grep
 #### CPUApp Mentrix facts
 
 CPUApp identifies Mentrix as `PANEL_TYPE_MENTRIX_DESK` (`0x8410`) and maps it to `rARES_DESK`. Mentrix participates in selected V-Series, enhanced-DPI and IVC-client behavior, but not every contiguous V-Series subtype predicate; role compatibility has a separate Mentrix endpoint-mask bit. It has its own physical layout, three page-changing modules and a distinct function-key refresh path even where it reuses V-Series action code.
+A 'NID' is a non-interuptible download, and is the push of configuration/changes from EHX to CPUApp to the other system members such as the E-IPA and panels etc.
 
 #### Build and source map
 
